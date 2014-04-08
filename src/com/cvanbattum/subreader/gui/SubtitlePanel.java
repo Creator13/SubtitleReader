@@ -9,11 +9,14 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import com.cvanbattum.api.srt.SRTEntry;
+import com.cvanbattum.subreader.gui.colorscheme.ColorScheme;
+import com.cvanbattum.subreader.gui.colorscheme.SchemeManager;
 
 public class SubtitlePanel extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
 	
+	private ColorScheme scheme;
 	private String[] text;
 	private Font f;
 	private JLabel label;
@@ -103,17 +106,18 @@ public class SubtitlePanel extends JPanel {
 			
 		}
 		
-		setLayout(new BorderLayout());
-		setBackground(new Color(8, 8, 8));
-		
 		//TODO: Make font setting
 		f = new Font("Verdana", Font.BOLD, 26);
+		scheme = SchemeManager.getPreferredScheme();
+		
+		setLayout(new BorderLayout());
+		setBackground(scheme.getBackground());
 		
 		setLayout(new BorderLayout());
 		
 		label = new JLabel();
 		label.setFont(f);
-		label.setForeground(new Color(237, 237, 237));
+		label.setForeground(scheme.getText());
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setText(createLabelText(text));
 		add(label, BorderLayout.CENTER);
