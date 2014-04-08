@@ -18,6 +18,26 @@ public class SubtitlePanel extends JPanel {
 	private Font f;
 	private JLabel label;
 	
+	/**
+	 * Creates a new instance of <code>SubtitlePanel</code> with no starting 
+	 * text.
+	 */
+	public SubtitlePanel() {
+		super();
+		
+		this.text = new String[] {""};
+		
+		createPanel();
+		
+	}
+	
+	/**
+	 * Creates a new instance of <code>SubtitlePanel</code>. An 
+	 * <code>SRTEntry</code> is asked as parameter for use as the starting 
+	 * text.
+	 * 
+	 * @param entry Starting entry.
+	 */
 	public SubtitlePanel(SRTEntry entry) {
 		super();
 		
@@ -27,6 +47,12 @@ public class SubtitlePanel extends JPanel {
 		
 	}
 	
+	/**
+	 * Creates a new instance of SubtitlePanel using one or more Strings as 
+	 * starting text.
+	 * 
+	 * @param str The text to display.
+	 */
 	public SubtitlePanel(String... str) {
 		super();
 		
@@ -37,7 +63,10 @@ public class SubtitlePanel extends JPanel {
 	}
 	
 	/**
-	 * Sets the text using a <code>String</code>. If the parameter is an array with more than one element, each element will be displayed as a separate line. The onscreen text is immediately changed when this method gets called.
+	 * Sets the text using a <code>String</code>. If the parameter is an array 
+	 * with more than one element, each element will be displayed as a separate
+	 * line. The onscreen text is immediately changed when this method gets 
+	 * called.
 	 * 
 	 * @param str 
 	 * 		A single <code>String</code> or an array of Strings as the new text
@@ -91,6 +120,21 @@ public class SubtitlePanel extends JPanel {
 		
 	}
 	
+	/*
+	 * Creates the text of the label. The text has the following format:
+	 * 
+	 *		<html>
+	 *			<div style="text-align:center">
+	 *				[LINE 1]<br>
+	 *				[LINE 2]<br>
+	 *				...
+	 *			</div>
+	 *		</html>
+	 * 
+	 * The div style property is used to center the text as this is not easily
+	 * done when using the Java Swing API
+	 * 
+	 */
 	private String createLabelText(String... str) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<html><div style=\"text-align:center\">");
@@ -105,6 +149,16 @@ public class SubtitlePanel extends JPanel {
 		
 	}
 	
+	/**
+	 * Returns the text of this {@link SubtitlePanel} instance in the form of 
+	 * an array. Each element of that array stands for a displayed line. If you
+	 * want for example use the second line, you use this method and retrieve
+	 * element [1]. 
+	 * 
+	 * @return 
+	 * 		An array of <code>Strings</code> which contains all lines as 
+	 * 		different elements
+	 */
 	public String[] getText() {
 		return this.text;
 		
