@@ -104,7 +104,7 @@ public class SubtitlePanel extends JPanel {
 		}
 		
 		setLayout(new BorderLayout());
-		setBackground(Color.BLACK);
+		setBackground(new Color(8, 8, 8));
 		
 		//TODO: Make font setting
 		f = new Font("Verdana", Font.BOLD, 26);
@@ -113,7 +113,7 @@ public class SubtitlePanel extends JPanel {
 		
 		label = new JLabel();
 		label.setFont(f);
-		label.setForeground(Color.WHITE);
+		label.setForeground(new Color(237, 237, 237));
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setText(createLabelText(text));
 		add(label, BorderLayout.CENTER);
