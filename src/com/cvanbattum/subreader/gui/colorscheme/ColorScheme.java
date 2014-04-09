@@ -41,8 +41,21 @@ public interface ColorScheme {
 	public Color getForegroundClick();
 	
 	/**
-	 * Text color
+	 * Background color when disabled
 	 */
+	public Color getBackgroundDisabled();
+	
+	/**
+	 * Foreground color when disabled
+	 */
+	public Color getForegroundDisabled();
+	
+	/**
+	 * Text color. <br>
+	 * <br>
+	 * Text color might be the same as the foreground color.
+	 */
+	//TODO: is this really necessary?
 	public Color getText();
 	
 }
