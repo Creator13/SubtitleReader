@@ -3,6 +3,11 @@ package com.cvanbattum.api.srt;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * 
+ * @author Casper van Battum
+ *
+ */
 public class SRTSubtitle extends ArrayList<SRTEntry> {
 	
 	private static final long serialVersionUID = -2522062504183812033L;

@@ -1,5 +1,10 @@
 package com.cvanbattum.api.srt;
 
+/**
+ * 
+ * @author Casper van Battum
+ *
+ */
 public class SRTEntry {
 
 	/**
