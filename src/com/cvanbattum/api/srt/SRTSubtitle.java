@@ -121,6 +121,8 @@ public class SRTSubtitle extends ArrayList<SRTEntry> {
 		return sb.toString();
 	}
 	
+	//Gives a formatted time String in the format hh:mm:ss:MMM (where mm are 
+	//minutes and MMM are milliseconds)
 	private String formatTime(long timeMillis) {
 		final long hr = TimeUnit.MILLISECONDS.toHours(timeMillis);
         final long min = TimeUnit.MILLISECONDS.toMinutes(timeMillis - TimeUnit.HOURS.toMillis(hr));
