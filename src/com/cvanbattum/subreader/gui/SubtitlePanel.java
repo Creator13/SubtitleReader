@@ -1,7 +1,6 @@
 package com.cvanbattum.subreader.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.JLabel;
@@ -10,9 +9,10 @@ import javax.swing.SwingConstants;
 
 import com.cvanbattum.api.srt.SRTEntry;
 import com.cvanbattum.subreader.gui.colorscheme.ColorScheme;
+import com.cvanbattum.subreader.gui.colorscheme.Colorizable;
 import com.cvanbattum.subreader.gui.colorscheme.SchemeManager;
 
-public class SubtitlePanel extends JPanel {
+public class SubtitlePanel extends JPanel implements Colorizable {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -111,16 +111,22 @@ public class SubtitlePanel extends JPanel {
 		scheme = SchemeManager.getPreferredScheme();
 		
 		setLayout(new BorderLayout());
-		setBackground(scheme.getBackground());
 		
 		setLayout(new BorderLayout());
 		
 		label = new JLabel();
 		label.setFont(f);
-		label.setForeground(scheme.getText());
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setText(createLabelText(text));
 		add(label, BorderLayout.CENTER);
+		
+		setColors();
+		
+	}
+	
+	private void setColors() {
+		setBackground(scheme.getBackground());
+		label.setForeground(scheme.getText());
 		
 	}
 	
@@ -165,6 +171,19 @@ public class SubtitlePanel extends JPanel {
 	 */
 	public String[] getText() {
 		return this.text;
+		
+	}
+
+	@Override
+	public void setColorScheme(ColorScheme scheme) {
+		this.scheme = scheme;
+		setColors();
+		
+	}
+
+	@Override
+	public ColorScheme getColorScheme() {
+		return scheme;
 		
 	}
 	
