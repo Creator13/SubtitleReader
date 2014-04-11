@@ -52,27 +52,6 @@ public class SubtitleButton extends JButton implements Colorizable {
 	private Font f;
 	private Path2D path;
 	
-	public static void main(String[] args) {
-		final JFrame f = new JFrame();
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.setLayout(new BorderLayout());
-		
-		Path2D p = new Path2D.Float(Path2D.WIND_EVEN_ODD);
-		p.moveTo(0, 0);
-		p.lineTo(20, 0);
-		p.lineTo(20, 20);
-		p.lineTo(0, 20);
-		p.lineTo(5, 10);
-		p.closePath();
-		
-		SubtitleButton sb = createMinimizeButton(new Dimension(150, 150));
-		
-		f.add(sb, BorderLayout.SOUTH);
-		f.pack();
-		f.setVisible(true);
-		
-	}
-	
 	/**
 	 * Creates a new, empty {@link SubtitleButton}.
 	 */
