@@ -1,6 +1,5 @@
 package com.cvanbattum.subreader.gui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -18,7 +17,6 @@ import java.util.ArrayList;
 import javax.swing.ButtonModel;
 import javax.swing.Icon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 
 import com.cvanbattum.subreader.functional.SubtitleReaderProgram;
 import com.cvanbattum.subreader.gui.colorscheme.ColorScheme;
