@@ -12,7 +12,7 @@ import java.awt.Color;
  *     <li>Hover (background): Lighter gray (#4A4A4A (r: 74, g: 74, b: 74))</li>
  *     <li>Hover (foreground): Green(#7BDB33 (r: 109, g: 194, b: 45))</li>
  *     <li>Click (background): Lighter gray (#4A4A4A (r: 74, g: 74, b: 74))</li>
- *     <li>Click (Foreground): Lighter green (#7BDB33 (r: 123, g: 219, b: 51))</li>
+ *     <li>Click (Foreground): Green(#7BDB33 (r: 109, g: 194, b: 45))</li>
  *     <li>Disabled (background): Dark gray (#2E2E2E (r: 46, g: 46, b: 46)</li>
  *     <li>Disabled (foreground): Light green (#B2EF84 (r: 178, g: 239, b: 132)</li>
  *     <li>Text: Very light gray (#EDEDED (r: 237, g: 237, b: 237))</li>
@@ -77,11 +77,11 @@ public class DarkColorScheme implements ColorScheme {
 	}
 
 	/**
-	 * Lighter green (#4A4A4A (r: 74, g: 74, b: 74))
+	 * Green(#7BDB33 (r: 109, g: 194, b: 45))
 	 */
 	@Override
 	public Color getForegroundClick() {
-		return LIGHTER_GREEN;
+		return GREEN;
 		
 	}
 	
