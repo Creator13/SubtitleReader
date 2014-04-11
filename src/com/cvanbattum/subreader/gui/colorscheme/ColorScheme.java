@@ -55,7 +55,6 @@ public interface ColorScheme {
 	 * <br>
 	 * Text color might be the same as the foreground color.
 	 */
-	//TODO: is this really necessary?
 	public Color getText();
 	
 }
