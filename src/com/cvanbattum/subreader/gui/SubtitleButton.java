@@ -8,6 +8,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 import javax.swing.ButtonModel;
 import javax.swing.Icon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 
 import com.cvanbattum.subreader.functional.SubtitleReaderProgram;
 import com.cvanbattum.subreader.gui.colorscheme.ColorScheme;
@@ -331,6 +334,7 @@ public class SubtitleButton extends JButton implements Colorizable {
 		
 	}
 	
+	//TODO: Make new class for this?
 	 //=========================\\
 	//= Static 'create' methods =\\
 	//---------------------------\\
@@ -346,89 +350,114 @@ public class SubtitleButton extends JButton implements Colorizable {
 	 * This button supports custom colors. In the default ColorScheme, these 
 	 * are shades of red depending on the state the button is in. These custom
 	 * colors can be disabled by setting <code>hasCustomColor</code> to 
-	 * <code>false</code>
+	 * <code>false</code><br>
+	 * This method also has the possibility to add an {@link ActionListener} to
+	 * the button automatically, that, when clicked, will end the program with
+	 * return code <code>0</code>.
 	 * 
 	 * @param size
 	 * 			The size of the button.
 	 * @param hasCustomColor
 	 * 			Set to <code>true</code> if you want this button to use custom 
 	 * 			colors.
+	 * @param addCloseAction
+	 * 			Set to <code>true</code> to add an ActionListener to this 
+	 * 			button that, when clicked, will end the program.
 	 * @return
 	 * 			A new button with a cross shape on it.
 	 */
-	public static SubtitleButton createCloseButton(Dimension size, boolean hasCustomColor) {
-		int width = size.width;
-		int height = size.height;
+	public static SubtitleButton createCloseButton(Dimension size, boolean hasCustomColor, boolean addCloseAction) {
+		float a = (float) Math.floor(getGridUnit(size, 1f/5f));
 		
-		float padding_x;
-		float padding_y;
-		float innerSide;
-		//If square
-		if (width == height) {
-			padding_x = 1f/6f * width;
-			padding_y = padding_x;
-			innerSide = height - (2 * padding_y);
+		if (a > 0) {
+			//This path was mathematically defined using a sheet of raster paper..
+			Path2D path = new Path2D.Float(Path2D.WIND_EVEN_ODD);
+			//					   x       y
+			/*0*/	path.moveTo(a, 		0     );
+			/*1*/	path.lineTo(5 * a, 	4 * a );
+			/*2*/	path.lineTo(9 * a,	0     );
+			/*3*/	path.lineTo(10 * a, a     );
+			/*4*/	path.lineTo(6 * a, 	5 * a );
+			/*5*/	path.lineTo(10 * a, 9 * a );
+			/*6*/	path.lineTo(9 * a, 	10 * a);
+			/*7*/	path.lineTo(5 * a, 	6 * a );
+			/*8*/	path.lineTo(a, 		10 * a);
+			/*9*/	path.lineTo(0, 		9 * a );
+			/*10*/	path.lineTo(4 * a, 	5 * a );
+			/*11*/	path.lineTo(0, 		a     );
+			path.closePath();
+			
+			if (hasCustomColor) {
+				// Color for this button is #C22D2D (red)
+				Color clr1 = new Color(194, 45, 45);
+				//Hover and click color #DB3333
+				Color clr2 = new Color(219, 51, 51);
+				//Disabled color #EF8484
+				Color clr3 = new Color(239, 132, 132);
+				
+				SubtitleButton sb = new SubtitleButton(path, size, clr1, clr2, clr2, clr3, null);
+				
+				//Ad Actionlistener if wanted
+				if (addCloseAction) { 
+					sb.addActionListener(new ActionListener() {
+						
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							if (e.getSource() instanceof SubtitleButton) {
+								System.exit(0);
+								
+							}
+							
+						}
+						
+					});
+					
+					return sb;
+					
+				}
+				//Not wanted so directly return sb
+				else return sb;
+				
+				
+			}
+			else {
+				SubtitleButton sb = new SubtitleButton(path, size);
+				
+				//Add action listener if wanted
+				if (addCloseAction) { 
+					sb.addActionListener(new ActionListener() {
+						
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							if (e.getSource() instanceof SubtitleButton) {
+								System.exit(0);
+								
+							}
+							
+						}
+						
+					});
+					
+					return sb;
+					
+				}
+				//Not wanted so directly return sb
+				else return sb;
+				
+			}
 			
 		}
-		//if rectangle (lying)
-		else if (width > height) {
-			padding_y = 1f/6f * width;
-			innerSide = height - (2 * padding_y);
-			padding_x = 1f/2f * (width - innerSide);
-			
-		}
-		//if rectangle (standing)
-		else if (height > width) {
-			padding_x = 1f/6f * width;
-			innerSide = width - (2 * padding_x);
-			padding_y = 1f/2f * (height - innerSide);
-			
-		}
-		//Unreachable, but 'necessary' for no errors
 		else {
 			try {
-				throw new Exception("Something very weird happened");
-				
+				throw new Exception("Unknown error");
 			}
 			catch (Exception e) {
 				e.printStackTrace();
 				return null;
 				
 			}
-			
+		
 		}
-		
-		float a = 1f/10f * innerSide;
-		
-		//This path was mathematically defined using a sheet of raster paper..
-		Path2D path = new Path2D.Float(Path2D.WIND_EVEN_ODD);
-		//					   x       y
-		/*0*/	path.moveTo(a, 		0     );
-		/*1*/	path.lineTo(5 * a, 	4 * a );
-		/*2*/	path.lineTo(9 * a,	0     );
-		/*3*/	path.lineTo(10 * a, a     );
-		/*4*/	path.lineTo(6 * a, 	5 * a );
-		/*5*/	path.lineTo(10 * a, 9 * a );
-		/*6*/	path.lineTo(9 * a, 	10 * a);
-		/*7*/	path.lineTo(5 * a, 	6 * a );
-		/*8*/	path.lineTo(a, 		10 * a);
-		/*9*/	path.lineTo(0, 		9 * a );
-		/*10*/	path.lineTo(4 * a, 	5 * a );
-		/*11*/	path.lineTo(0, 		a     );
-		path.closePath();
-		
-		if (hasCustomColor) {
-			// Color for this button is #C22D2D (red)
-			Color clr1 = new Color(194, 45, 45);
-			//Hover and click color #DB3333
-			Color clr2 = new Color(219, 51, 51);
-			//Disabled color #EF8484
-			Color clr3 = new Color(239, 132, 132);
-			
-			return new SubtitleButton(path, size, clr1, clr2, clr2, clr3, null);
-			
-		}
-		else return new SubtitleButton(path, size);
 		
 	}
 	
@@ -437,35 +466,189 @@ public class SubtitleButton extends JButton implements Colorizable {
 	 * it, meant as a button for minimizing a window. This factory method does 
 	 * not include support for custom colors. The size argument defines the 
 	 * <i>preferred</i> size for the button. However, depending on the layout, 
-	 * this might differ in reality
+	 * this might differ in reality<br><br>
 	 * 
-	 * @param size The preferred size for this button
-	 * @return A new <code>SubtitleButton</code>
+	 * When adding a {@link JFrame} that is not <code>null</code>, this method 
+	 * will add an {@link ActionListener} to the button that will minimize the
+	 * given frame. When this is not asked for, you have to set the 
+	 * <code>f</code> argument to <code>null</code>.
+	 * 
+	 * @param size 
+	 * 			The preferred size for this button
+	 * @param f
+	 * 			A JFrame to minimize, or <code>null</code> if this function is
+	 * 			unwanted.
+	 * @return 
+	 * 			A new <code>SubtitleButton</code>
 	 */
-	public static SubtitleButton createMinimizeButton(Dimension size) {
+	public static SubtitleButton createMinimizeButton(Dimension size, final JFrame f) {		
+		float a = getGridUnit(size, 1f/5f);
+		
+		if (a > 0) {
+			Path2D path = new Path2D.Float(Path2D.WIND_EVEN_ODD);
+			path.moveTo(Math.floor(0.5f * a), Math.floor(4.5f * a));
+			path.lineTo(Math.floor(9.5f * a), Math.floor(4.5f * a));
+			path.lineTo(Math.floor(9.5f * a), Math.floor(7.5f * a));
+			path.lineTo(Math.floor(0.5f * a), Math.floor(7.5f * a));
+			path.closePath();
+			
+			path.moveTo(10 * a, 10 * a);
+			
+			SubtitleButton sb = new SubtitleButton(path, size);
+			
+			//Check if frame is given. Add minimize ActionListener if so.
+			if (f == null) return sb;
+			else {
+				sb.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						f.setExtendedState(JFrame.ICONIFIED);
+						
+					}
+					
+				});
+				
+				return sb;
+				
+			}
+			
+		}
+		else {
+			try {
+				throw new Exception("Unknown error");
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				return null;
+				
+			}
+			
+		}
+		
+	}
+	
+	/**
+	 * Creates a new {@link SubtitleButton} with a 'play' icon on it. This 
+	 * button can be used as a play button, hence the name of the method. This
+	 * factory method does not include support for custom colors. The 
+	 * <code>size</code> parameter of this method will be the <i>preferred</i>
+	 * size of the button. The actual size might differ from this, depending on
+	 * the container's layout.
+	 * 
+	 * @param size 	
+	 * 			The <i>preferred</i> size of this button
+	 * @return	A new <code>SubtitleButton</code> with a 'play' icon on it.
+	 */
+	public static SubtitleButton createPlayButton(Dimension size) {
+		float a = (float) Math.floor(getGridUnit(size, 1f/4f));
+		
+		if (a > 0) {
+			Path2D path = new Path2D.Float(Path2D.WIND_EVEN_ODD);
+			path.moveTo(0, 0);
+			path.lineTo(10 * a, 5 * a);
+			path.lineTo(0, 10 * a);
+			path.closePath();
+			
+			return new SubtitleButton(path, size);
+			
+		}
+		else {
+			try {
+				throw new Exception("Unknown error");
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				return null;
+				
+			}
+			
+		}
+		
+	}
+	
+	/**
+	 * Creates a new {@link SubtitleButton} with a 'pause' icon on it. This 
+	 * button can be used as a pause button, hence the name of the method. This
+	 * factory method does not include support for custom colors. The 
+	 * <code>size</code> parameter of this method will be the <i>preferred</i>
+	 * size of the button. The actual size might differ from this, depending on
+	 * the container's layout.
+	 * 
+	 * @param size 	
+	 * 			The <i>preferred</i> size of this button
+	 * @return	A new <code>SubtitleButton</code> with a 'pause' icon on it.
+	 */
+	public static SubtitleButton createPauseButton(Dimension size) {
+		float a = getGridUnit(size, 1f/5f);
+		
+		if (a > 0) {
+			Path2D path = new Path2D.Float(Path2D.WIND_EVEN_ODD);
+			path.moveTo(Math.floor(0), Math.floor(0.5f * a));
+			path.lineTo(Math.floor(4 * a), Math.floor(0.5f * a));
+			path.lineTo(Math.floor(4 * a), Math.floor(9.5f * a));
+			path.lineTo(Math.floor(a), Math.floor(9.5f * a));
+			path.lineTo(Math.floor(a), Math.floor(0.5f * a));
+			path.moveTo(Math.floor(6 * a), Math.floor(0.5f * a));
+			path.lineTo(Math.floor(9 * a), Math.floor(0.5f * a));
+			path.lineTo(Math.floor(9 * a), Math.floor(9.5f * a));
+			path.lineTo(Math.floor(6 * a), Math.floor(9.5f * a));
+			path.lineTo(Math.floor(6 * a), Math.floor(0.5f * a));
+			path.moveTo(Math.floor(10 * a), Math.floor(10 * a));
+			
+			return new SubtitleButton(path, size);
+			
+		}
+		else {
+			try {
+				throw new Exception("Unknown error");
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				return null;
+				
+			}
+			
+		}
+		
+	}
+	
+	//Returns the 'a' value used by the create methods above
+	//The padding factor is the percentage (0 to 0.4999...) of the width that will be used as padding 
+	private static float getGridUnit(Dimension size, float paddingFactor) {
 		int width = size.width;
 		int height = size.height;
+		
+		//Check paddingFactor
+		if (paddingFactor < 0) {
+			throw new IllegalArgumentException("padding factor may not be smaller than zero");
+			
+		}
+		else if (paddingFactor >= 0.5f) {
+			throw new IllegalArgumentException("padding factor cannot be equal to or larger than half the size of the width (0.5)");
+			
+		}
 		
 		float padding_x;
 		float padding_y;
 		float innerSide;
 		//If square
 		if (width == height) {
-			padding_x = 1f/6f * width;
+			padding_x = paddingFactor * width;
 			padding_y = padding_x;
 			innerSide = height - (2 * padding_y);
 			
 		}
 		//if rectangle (lying)
 		else if (width > height) {
-			padding_y = 1f/6f * width;
+			padding_y = paddingFactor * width;
 			innerSide = height - (2 * padding_y);
 			padding_x = 1f/2f * (width - innerSide);
 			
 		}
 		//if rectangle (standing)
 		else if (height > width) {
-			padding_x = 1f/6f * width;
+			padding_x = paddingFactor * width;
 			innerSide = width - (2 * padding_x);
 			padding_y = 1f/2f * (height - innerSide);
 			
@@ -478,24 +661,13 @@ public class SubtitleButton extends JButton implements Colorizable {
 			}
 			catch (Exception e) {
 				e.printStackTrace();
-				return null;
+				return -1;
 				
 			}
 			
 		}
 		
-		float a = 1f/10f * innerSide;
-		
-		Path2D path = new Path2D.Float(Path2D.WIND_EVEN_ODD);
-		path.moveTo(0.5f * a, 6 * a);
-		path.lineTo(9.5f * a, 6 * a);
-		path.lineTo(9.5f * a, 7.5f * a);
-		path.lineTo(0.5f * a, 7.5f * a);
-		path.closePath();
-		
-		path.moveTo(10 * a, 10 * a);
-		
-		return new SubtitleButton(path, size);
+		return 1f/10f * innerSide;
 		
 	}
 	
