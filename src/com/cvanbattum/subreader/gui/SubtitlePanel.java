@@ -2,7 +2,11 @@ package com.cvanbattum.subreader.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -12,9 +16,16 @@ import com.cvanbattum.subreader.gui.colorscheme.ColorScheme;
 import com.cvanbattum.subreader.gui.colorscheme.Colorizable;
 import com.cvanbattum.subreader.gui.colorscheme.SchemeManager;
 
+/**
+ * 
+ * @author Casper van Battum
+ *
+ */
 public class SubtitlePanel extends JPanel implements Colorizable {
 	
 	private static final long serialVersionUID = 1L;
+	
+	private final JFrame parent;
 	
 	private ColorScheme scheme;
 	private String[] text;
@@ -25,9 +36,10 @@ public class SubtitlePanel extends JPanel implements Colorizable {
 	 * Creates a new instance of <code>SubtitlePanel</code> with no starting 
 	 * text.
 	 */
-	public SubtitlePanel() {
+	public SubtitlePanel(JFrame parentFrame) {
 		super();
 		
+		this.parent = parentFrame;
 		this.text = new String[] {""};
 		
 		createPanel();
@@ -41,9 +53,10 @@ public class SubtitlePanel extends JPanel implements Colorizable {
 	 * 
 	 * @param entry Starting entry.
 	 */
-	public SubtitlePanel(SRTEntry entry) {
+	public SubtitlePanel(JFrame parentFrame, SRTEntry entry) {
 		super();
 		
+		this.parent = parentFrame;
 		this.text = entry.getText();
 		
 		createPanel();
@@ -56,9 +69,10 @@ public class SubtitlePanel extends JPanel implements Colorizable {
 	 * 
 	 * @param str The text to display.
 	 */
-	public SubtitlePanel(String... str) {
+	public SubtitlePanel(JFrame parentFrame, String... str) {
 		super();
 		
+		this.parent = parentFrame;
 		this.text = str;
 		
 		createPanel();
@@ -112,10 +126,14 @@ public class SubtitlePanel extends JPanel implements Colorizable {
 		
 		setLayout(new BorderLayout());
 		
-		setLayout(new BorderLayout());
+		SubtitlePanelMouseListener spml = new SubtitlePanelMouseListener();
+		
+		addMouseMotionListener(spml);
+		addMouseListener(spml);
 		
 		label = new JLabel();
 		label.setFont(f);
+		label.setForeground(scheme.getText());
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setText(createLabelText(text));
 		add(label, BorderLayout.CENTER);
@@ -184,6 +202,43 @@ public class SubtitlePanel extends JPanel implements Colorizable {
 	@Override
 	public ColorScheme getColorScheme() {
 		return scheme;
+		
+	}
+	
+	private class SubtitlePanelMouseListener implements MouseMotionListener, MouseListener {
+		
+		private int px, py;
+		
+		@Override
+		public void mouseDragged(MouseEvent e) {
+			parent.setLocation(e.getXOnScreen() - px, e.getYOnScreen() - py);
+			
+		}
+
+		@Override
+		public void mouseMoved(MouseEvent e) {}
+
+		@Override
+		public void mouseClicked(MouseEvent e) {}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			px = e.getX();
+			py = e.getY();
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+//			System.out.println("exiteds");
+			
+		}
 		
 	}
 	

@@ -2,6 +2,7 @@ package com.cvanbattum.subreader.gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+//import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -52,6 +53,32 @@ public class SubtitleButton extends JButton implements Colorizable {
 	private Color prefColorText;
 	private Font f;
 	private Path2D path;
+	
+//	public static void main(String[] args) {
+//		final JFrame f = new JFrame();
+//		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		f.setPreferredSize(new Dimension(200, 200));
+//		f.setLayout(new FlowLayout(FlowLayout.CENTER));
+//		f.setUndecorated(true);
+//		
+//		Path2D p = new Path2D.Float(Path2D.WIND_EVEN_ODD);
+//		p.moveTo(0, 0);
+//		p.lineTo(20, 0);
+//		p.lineTo(20, 20);
+//		p.lineTo(0, 20);
+//		p.lineTo(5, 10);
+//		p.closePath();
+//		
+//		Dimension d = new Dimension(20, 20);
+//		
+//		f.add(createCloseButton(d, true, true));
+//		f.add(createMinimizeButton(d, f));
+//		f.add(createPauseButton(d));
+//		f.add(createPlayButton(d));
+//		f.pack();
+//		f.setVisible(true);
+//		
+//	}
 	
 	/**
 	 * Creates a new, empty {@link SubtitleButton}.
@@ -367,7 +394,7 @@ public class SubtitleButton extends JButton implements Colorizable {
 	 * 			A new button with a cross shape on it.
 	 */
 	public static SubtitleButton createCloseButton(Dimension size, boolean hasCustomColor, boolean addCloseAction) {
-		float a = (float) Math.floor(getGridUnit(size, 1f/5f));
+		float a = getGridUnit(size, 1f/4.5f);
 		
 		if (a > 0) {
 			//This path was mathematically defined using a sheet of raster paper..
@@ -388,8 +415,8 @@ public class SubtitleButton extends JButton implements Colorizable {
 			path.closePath();
 			
 			if (hasCustomColor) {
-				// Color for this button is #C22D2D (red)
-				Color clr1 = new Color(194, 45, 45);
+				// Color for this button is #c21c1c (red)
+				Color clr1 = new Color(194, 28, 28);
 				//Hover and click color #DB3333
 				Color clr2 = new Color(219, 51, 51);
 				//Disabled color #EF8484
@@ -488,10 +515,8 @@ public class SubtitleButton extends JButton implements Colorizable {
 			Path2D path = new Path2D.Float(Path2D.WIND_EVEN_ODD);
 			path.moveTo(Math.floor(0.5f * a), Math.floor(4.5f * a));
 			path.lineTo(Math.floor(9.5f * a), Math.floor(4.5f * a));
-			path.lineTo(Math.floor(9.5f * a), Math.floor(7.5f * a));
-			path.lineTo(Math.floor(0.5f * a), Math.floor(7.5f * a));
-			path.closePath();
-			
+			path.lineTo(Math.floor(9.5f * a), Math.floor(7f * a));
+			path.lineTo(Math.floor(0.5f * a), Math.floor(7f * a));
 			path.moveTo(10 * a, 10 * a);
 			
 			SubtitleButton sb = new SubtitleButton(path, size);
